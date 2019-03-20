@@ -1,0 +1,17 @@
+main {
+    position: relative;
+}
+
+.wrapper {
+    margin: 20px auto;
+    width: 100%;
+    min-width: 900px;
+    max-width: 1200px;
+    background-color: #fff;
+    position: relative;
+}
+
+a {
+    text-decoration: none;
+    font-size: 14px;
+}

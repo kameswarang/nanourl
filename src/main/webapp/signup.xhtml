@@ -1,0 +1,57 @@
+<ui:composition template="/templates/subLayout.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+	
+	<ui:define name="title">
+		Nano URL Shortener - Signup for a new account
+	</ui:define>
+	<ui:define name="stylesheets">
+		<h:outputStylesheet library="default" name="css/login.css"/>
+	</ui:define>
+	<ui:define name="main">
+		<div class="loginWrapper">
+			<div class="heading">
+				<div class="logo">
+					<span class="blue">N</span><span class="red">a</span><span class="yellow">n</span><span class="blue">o</span>
+				</div>
+				<div class="title">Sign up</div>
+				<div class="subtitle">to continue to Nano URL Shortener</div>
+			</div>
+		<h:form>
+			<h:inputText id="fname" p:placeholder="First Name" value="#{signupBB.userBB.user.fname}">
+				<f:ajax event="blur" render="fnameErr"/>
+			</h:inputText>
+			<h:message id="fnameErr" for="fname" errorClass="error" showDetail="true"/>
+
+			<h:inputText id="lname" p:placeholder="Last Name" value="#{signupBB.userBB.user.lname}">
+				<f:ajax event="blur" render="lnameErr"/>
+			</h:inputText>
+			<h:message id="lnameErr" for="lname" errorClass="error" showDetail="true"/>
+
+			<h:inputText id="email" p:placeholder="Email" value="#{signupBB.userBB.user.email}">
+				<f:ajax event="blur" render="emailErr"/>
+			</h:inputText>
+			<h:message id="emailErr" for="email" errorClass="error" showDetail="true"/>
+
+			<h:inputSecret id="password" p:placeholder="Password" value="#{signupBB.userBB.user.password}" >
+				<f:converter converterId="com.nanourl.converters.ConvertCharArray"/>
+				<f:ajax event="blur" render="passwordErr"/>
+			</h:inputSecret>
+			<h:message id="passwordErr" for="password" errorClass="error" showDetail="true"/>
+			
+			<h:outputText id="signupStatus" value="#{signupBB.status}"/>
+
+			<h:commandButton value="Signup" action="#{signupBB.signupUser}" styleClass="mdl-button">
+				<f:ajax execute="@form" render="signupStatus fnameErr lnameErr emailErr passwordErr"/>
+			</h:commandButton>
+
+			<div>or</div>
+			
+			<div><a href="login.faces">Sign into existing account</a></div>
+
+		</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

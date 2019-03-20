@@ -1,0 +1,126 @@
+<ui:composition template="/templates/layout.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+	
+	<ui:define name="javascripts">
+			<h:outputScript library="default" name="javascripts/home.js"/>
+	</ui:define>
+	
+	<ui:define name="main">
+		<div class="shorten">
+			<h1>Simplify your links</h1>
+			<h:form>
+				<h:inputText id="newUrl" p:placeholder="Your original URL here" value="#{urlBB.newUrl.ourl}">
+					<f:ajax event="blur" execute="@this" render="newUrlErr"/>
+				</h:inputText>
+				<h:commandButton value="SHORTEN URL" action="#{urlBB.shortenUrl}" p:class="mdl-button mdl-shadow--2dp">
+					<f:ajax execute="@form" render="allUrls newUrlErr"/>
+				</h:commandButton>
+				<br/><h:message id="newUrlErr" for="newUrl" errorClass="error" showDetail="true"/>
+			</h:form>
+		</div>
+		<h:panelGroup id="allUrls">
+			<table class="mdl-data-table mdl-shadow--2dp">
+				<thead>
+					<tr>
+						<td colspan="5">
+							<button class="download" onclick="getAllUrls()">
+								<md-icon class="md-icon">
+									<svg id="download-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fit="" height="100%" width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
+										<path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+										<path d="M0 0h24v24H0z" fill="none"/>
+									</svg>
+								</md-icon>
+							</button>
+								Download CSV
+						</td>
+					</tr>
+					<tr>
+						<td class="long-url">Original URL</td>
+						<td class="created">Created</td>
+						<td class="short-url">Short URL</td>
+						<td class="clicks">All Clicks</td>
+					</tr>
+				</thead>
+				<tbody>
+						<ui:repeat value="#{sessionBB.currentUser.urls}" var="url">
+							<tr>
+								<td class="long-url"><a href="//#{url.ourl}">#{url.ourl}</a></td>
+								<td class="created">
+									<h:outputText value="#{url.created}">
+										<f:converter converterId="com.nanourl.converters.ConvertTimestamp"/>
+									</h:outputText>
+								</td>
+								<td class="short-url"><a href="http://#{url.surl}">#{url.surl}</a></td>
+								<td class="clicks">#{url.clicks}</td>
+							</tr>
+						</ui:repeat>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="5">
+							<!--<div class="pagination">
+								<div class="count-container">
+									Rows per page:
+									<button id="row-count">
+										10
+										<i class="material-icons">arrow_drop_down</i>
+									</button>
+								</div>
+								<div class="count">
+									1-6 of 6
+								</div>
+								<button class="mdl-button mdl-button\-\-icon">
+									<i class="material-icons">chevron_left</i>
+								</button>
+								<button class="mdl-button mdl-button\-\-icon">
+									<i class="material-icons">chevron_right</i>
+								</button>
+							</div>-->
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+			<div class="modal shorten-result" id="shortenResult">
+				<div class="container mdl-shadow--24dp">
+					<div class="title">
+						Your Short Url
+						<button class="close mdl-button mdl-js-button mdl-button--icon" data-upgraded=",MaterialButton" onclick="closeResult()">
+							<i id="result-close" class="material-icons">
+								close
+							</i>
+						</button>
+					</div>
+					<div class="content">
+						<span class="short-url">
+							<h:outputText value="#{urlBB.newUrl.surl}"/>
+							<!--<button id="modal-copy-rMJMSb" 
+							class="mdl-button mdl-js-button mdl-button\-\-icon" 
+							data-upgraded=",MaterialButton" tabindex="0">
+								<i class="material-icons">content_copy</i>
+							</button>-->
+						</span>
+						<a class="long-url" href="#{urlBB.newUrl.ourl}">
+							<h:outputText rendered="#{not empty urlBB.newUrl.surl}" value="#{urlBB.newUrl.prettyOurl}"/>
+							<i class="material-icons">open_in_new</i>
+						</a>
+					</div>
+					<div class="actions">
+						<button
+							id="result-done"
+							class="done mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect"
+							data-upgraded=",MaterialButton,MaterialRipple"
+							onclick="closeResult()">
+							Done
+							<!--<span class="mdl-button__ripple-container">
+								<span class="mdl-ripple"></span>
+							</span>-->
+						</button>
+					</div>
+				</div>
+			</div>
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,21 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html">
+	<div class="logo">
+		<span class="blue">N</span><span class="red">a</span><span class="yellow">n</span><span class="blue">o</span>
+		<span class="name">URL Shortener</span>
+	</div>
+	<ui:fragment rendered="#{not empty userLoggedIn and userLoggedIn}">
+		<div class="mdl-button-header">
+			<a href="logout.faces">Logout</a>
+		</div>
+	</ui:fragment>
+	<ui:fragment rendered="#{empty userLoggedIn}">
+		<div class="mdl-button-header">
+			<a href="signup.faces">Sign Up</a>
+		</div>
+		<span> or </span>
+		<div class="mdl-button-header">
+			<a href="login.faces">Login</a>
+		</div>
+	</ui:fragment>
+</ui:composition>

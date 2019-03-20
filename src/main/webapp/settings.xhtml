@@ -1,0 +1,15 @@
+<ui:composition template="/templates/layout.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+	<ui:define name="title">
+		Nano URL Shortener - Change your settings
+	</ui:define>
+
+	<ui:define name="main">
+		<h:outputText value="#{sessionBB.currentUser.name}"/><br/>
+		<h:outputText value="#{sessionBB.currentUser.email}"/><br/>
+	</ui:define>
+</ui:composition>

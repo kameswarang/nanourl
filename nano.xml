@@ -1,0 +1,4 @@
+<Context displayName="Nano URL Shortener" 
+    path="/nano" 
+    docBase="/home/ubuntu/workspace/nanourl/target/nano_core-1.0-SNAPSHOT" 
+    reloadable="true"/>

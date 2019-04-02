@@ -4,16 +4,22 @@
 		<span class="blue">N</span><span class="red">a</span><span class="yellow">n</span><span class="blue">o</span>
 		<span class="name">URL Shortener</span>
 	</div>
+	<div class="github" onclick="location.href='https://github.com/kameswarang/nano'">
+		<h:graphicImage library="default" name="img/github.png"/>
+	</div>
 	<ui:fragment rendered="#{not empty userLoggedIn and userLoggedIn}">
 		<div class="mdl-button-header">
 			<a href="logout.faces">Logout</a>
+		</div>
+		<div class="welcome">
+			Welcome, #{sessionBB.currentUser.getName()}
 		</div>
 	</ui:fragment>
 	<ui:fragment rendered="#{empty userLoggedIn}">
 		<div class="mdl-button-header">
 			<a href="signup.faces">Sign Up</a>
 		</div>
-		<span> or </span>
+		<span style="float: right;line-height: 28px;"> or </span>
 		<div class="mdl-button-header">
 			<a href="login.faces">Login</a>
 		</div>

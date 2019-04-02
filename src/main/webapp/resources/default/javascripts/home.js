@@ -22,7 +22,3 @@ function closeResult() {
     var form = document.getElementsByTagName("form")[0]
     form.children[1].value=""
 }
-
-function getAllUrls() {
-    
-}

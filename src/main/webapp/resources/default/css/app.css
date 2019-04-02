@@ -588,7 +588,7 @@ a {
     position: absolute;
     top: 50%;
     left: 33%;
-    transform: translateY(50%);
+    transform: translateY(30%);
 }
 
 .loginWrapper .heading {
@@ -623,4 +623,28 @@ a {
 .error {
     color: red;
     margin: 3px 0px;
+}
+
+.welcome {
+    display: inline-block;
+    vertical-align: middle;
+    width: fit-content;
+    float: right;
+    line-height: 28px;
+    padding-right: 8px;
+}
+
+.github {
+    display: inline-block;
+    line-height: 24px;
+    vertical-align: middle;
+    height: 30px;
+    padding: 0 0 2px 5px;
+}
+
+.github > img {
+    height: 30px;
+    width: 30px;
+    border-radius: 15px;
+    cursor: pointer;
 }

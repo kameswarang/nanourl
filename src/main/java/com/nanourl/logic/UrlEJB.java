@@ -72,7 +72,7 @@ public class UrlEJB implements UrlEJBLocal, Serializable {
 			
 			em.persist(u);
 			em.flush();
-			em.merge(user);
+			//em.merge(user);
 			
 			u = (Url) em.createNamedQuery("findByUrl").setParameter("ourl", u.getOurl()).getSingleResult();
 			
@@ -81,6 +81,7 @@ public class UrlEJB implements UrlEJBLocal, Serializable {
 			em.flush();
 			
 			em.refresh(u);
+			em.merge(user);
 			
 			return true;
 		}

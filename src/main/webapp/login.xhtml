@@ -20,12 +20,12 @@
 				<div class="subtitle">to continue to Nano URL Shortener</div>
 			</div>
 			<h:form>
-				<h:inputText id="email" p:placeholder="Email address" value="#{loginBB.userBB.user.email}">
+				<h:inputText id="email" p:placeholder="Email address" p:value="demouser@demo.com" value="#{loginBB.userBB.user.email}">
 					<f:ajax event="blur" render="emailErr"/>
 				</h:inputText>
 				<h:message id="emailErr" for="email" errorClass="error" showDetail="true"/>
 
-				<h:inputSecret id="password" p:placeholder="Password" value="#{loginBB.userBB.user.password}" >
+				<h:inputSecret id="password" p:placeholder="Password" p:value="demonstration" value="#{loginBB.userBB.user.password}" >
 					<f:converter converterId="com.nanourl.converters.ConvertCharArray"/>
 					<f:ajax event="blur" render="passwordErr"/>
 				</h:inputSecret>

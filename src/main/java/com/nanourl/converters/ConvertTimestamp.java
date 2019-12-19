@@ -22,8 +22,4 @@ public class ConvertTimestamp implements Converter {
 		throws ConverterException {
 			return ts.toString();
 	}
-
-	public ConvertTimestamp() {
-		
-	}
 }

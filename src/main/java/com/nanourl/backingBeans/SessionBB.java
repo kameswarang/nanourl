@@ -22,11 +22,11 @@ public class SessionBB implements Serializable {
     
     private User currentUser;
     public User getCurrentUser() { return this.currentUser; }
-    public void setCurrentUser(User u) { this.currentUser = u; }
-    
+
     @PostConstruct
-    public void initialise() {
+    public void fetchCurrentUserFromDB() {
         String currentEmail = (String) httpSession.getAttribute("currentUser");
         this.currentUser = userEJB.getUserByEmail(currentEmail);
+        //System.out.println(this.currentUser.getUrls().size());
     }
 }

@@ -2,6 +2,7 @@ package com.nanourl.logic;
 
 import java.io.Serializable;
 import java.io.File;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.ejb.SessionContext;
@@ -11,6 +12,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.annotation.Resource;
 import javax.annotation.PostConstruct;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ConstraintViolation;
 
 import com.nanourl.persistence.Url;
 import com.nanourl.persistence.User;
@@ -37,7 +40,7 @@ public class UrlEJB implements UrlEJBLocal, Serializable {
 	public String encodeUrl(int id, String domain) {
 		StringBuilder surl = new StringBuilder();
 		surl.append(domain);
-		surl.append("/nano?r=");
+		surl.append("?r=");
 		
 		while(id > 0) {
 			surl.append(this.urlHash.charAt(id % urlBase));
@@ -46,7 +49,7 @@ public class UrlEJB implements UrlEJBLocal, Serializable {
 		
 		//System.out.println(surl.toString());
 		return surl.toString();
-	}
+	}	
 	
 	public String decodeUrl(String surl, User user) {
 
@@ -66,23 +69,23 @@ public class UrlEJB implements UrlEJBLocal, Serializable {
 		return u.getOurl();
 	}
 	
-	public boolean createUrl(Url u, User user, String domain) {
+	public boolean createUrl(User user, Url u, String domain) {
 		try {
 			user.addUrl(u);
 			
+			//Save to database
 			em.persist(u);
 			em.flush();
-			//em.merge(user);
 			
-			u = (Url) em.createNamedQuery("findByUrl").setParameter("ourl", u.getOurl()).getSingleResult();
-			
+			//Generate short url
 			u.setSurl(this.encodeUrl(u.getId(), domain));
+			
+			//Update
 			em.merge(u);
-			em.flush();
 			
-			em.refresh(u);
+			//Merge user(currently detached) so that the cache will have the latest version
 			em.merge(user);
-			
+
 			return true;
 		}
 		catch(Exception e) {

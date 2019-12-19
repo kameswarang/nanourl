@@ -11,5 +11,5 @@ import com.nanourl.persistence.User;
 public interface UrlEJBLocal {
     public String encodeUrl(int id, String domain);
     public String decodeUrl(String surl, User user);
-	public boolean createUrl(Url u, User user, String domain);
+	public boolean createUrl(User user, Url u, String domain);
 }

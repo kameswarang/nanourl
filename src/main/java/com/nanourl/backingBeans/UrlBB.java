@@ -13,12 +13,15 @@ import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ConstraintViolation;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.io.IOException;
 import java.io.File;
 import java.io.Writer;
+import java.util.Set;
 
 @Named("urlBB") @RequestScoped
 public class UrlBB {
@@ -42,17 +45,21 @@ public class UrlBB {
 
     private Url newUrl;
     public Url getNewUrl() { return this.newUrl; }
+    
+    private String shortenRequestStatus;
+    public String getShortenRequestStatus() { return this.shortenRequestStatus; }
 
     @PostConstruct
     public void initialise() {
+        //Safety method
         this.restrictBB.restrictForVisitor();
+        
         this.fCtx = FacesContext.getCurrentInstance();
         this.eCtx = fCtx.getExternalContext();
         this.currentUser = this.sessionBB.getCurrentUser();
-        this.surl = req.getParameter("r");
-        this.newUrl = new Url();
 
         //Look for surl and redirect
+        this.surl = req.getParameter("r");
         if(this.surl != null) {
             String ourl = this.urlEJB.decodeUrl(surl, this.currentUser);
             try {
@@ -63,13 +70,36 @@ public class UrlBB {
                 System.out.println(e.getMessage());
             }
         }
+        
+        //Business as usual
+        this.newUrl = new Url();
+
+        this.shortenRequestStatus = "";
+
     }
     
     public String shortenUrl() {
         String domain = req.getServerName() + ":" + req.getServerPort();
         
-        this.urlEJB.createUrl(this.newUrl, this.currentUser, domain);
-        System.out.println(this.newUrl.getSurl());
+        Url newShortUrl = new Url();
+        newShortUrl.setOurl(newUrl.getOurl());
+        //System.out.println(this.currentUser.getUrls().size());
+        //newShortUrl.setUser(this.currentUser);
+        //System.out.println(this.currentUser.getUrls().size());
+
+
+        if(this.urlEJB.createUrl(this.currentUser, newShortUrl, domain) == false) {
+            //put error message in page
+            shortenRequestStatus = "Error occured. Try again later.";
+        }
+        else {
+            //Success
+            //Copy short url to newUrl so that result can be displayed
+            this.newUrl.setSurl(newShortUrl.getSurl());
+            
+            //Request succeeded, update reset status message
+            shortenRequestStatus = "";
+        }
         return null;
     }
     

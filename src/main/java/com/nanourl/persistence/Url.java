@@ -6,10 +6,14 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.sql.Timestamp;
 
 import org.hibernate.validator.constraints.URL;
@@ -31,9 +35,10 @@ public class Url implements Serializable {
     public String getOurl() { return this.ourl; }
     public void setOurl(String o) { this.ourl = o;}
     
-    @Column(nullable=false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp created;
-    public Timestamp getCreated() { return this.created; }
+    @Column(nullable=false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
+    public Date getCreated() { return this.created; }
     
     @Column
     private String surl;
@@ -54,5 +59,13 @@ public class Url implements Serializable {
     @ManyToOne
     private User user;
     public User getUser() { return this.user; }
-    public void setUser(User u) { this.user = u; }
+    public void setUser(User u) {
+        this.user = u;
+        u.addUrl(this);
+    }
+
+    @PrePersist
+    public void setCreatedTimestamp() {
+        this.created = new Date();
+    }
 }

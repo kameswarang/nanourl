@@ -19,6 +19,7 @@
 					<f:ajax execute="@form" render="allUrls newUrlErr"/>
 				</h:commandButton>
 				<br/><h:message id="newUrlErr" for="newUrl" errorClass="error" showDetail="true"/>
+				<br/><h:outputText id="shortenStatus" value="#{urlBB.shortenRequestStatus}"/>
 			</h:form>
 		</div>
 		<h:panelGroup id="allUrls">

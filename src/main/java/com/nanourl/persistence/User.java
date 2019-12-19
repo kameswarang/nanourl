@@ -18,6 +18,7 @@ import javax.persistence.Transient;
 import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
 import javax.persistence.PrePersist;
+import javax.persistence.PostLoad;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.Pattern;
@@ -53,7 +54,7 @@ public class User implements Serializable {
 
 	@Transient
 	@NotNull(message="Enter a password")
-	@Size(min=5, max=20, message="Must be between 5 and 20 characters")
+	@Size(min=5, message="Must be alteast 5 characters")
 	private char[] password;
 	public char[] getPassword() { return this.password; }
 	public void setPassword(char[] password) { this.password = password; }
@@ -67,15 +68,15 @@ public class User implements Serializable {
 	private byte[] hash;
 	public byte[] getHash() { return this.hash; }
 
-	@OneToMany(mappedBy="user", cascade=CascadeType.ALL,  orphanRemoval=true)
+	@OneToMany(mappedBy="user", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<Url> urls;
 	public List<Url> getUrls() { return this.urls; }
-	public void addUrl(Url u) {	
+	public void addUrl(Url u) {
+		if(u.getUser() == this) {
+			this.urls.add(u);
+			return;
+		}
 		u.setUser(this);
-		this.urls.add(u);
-	}
-	public void removeUrl(Url u) {
-		this.urls.remove(u);
 	}
 
 	public User() {
@@ -123,5 +124,10 @@ public class User implements Serializable {
 	    v.setSalt(this.salt);
 	    v.setHashFromPassword();
 		return Arrays.equals(this.hash, v.getHash());
+	}
+	
+	@PostLoad
+	public void makePasswordNotNull() {
+		this.password = ("5chars").toCharArray();
 	}
 }

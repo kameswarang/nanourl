@@ -21,7 +21,6 @@ public class UserEJB implements UserEJBLocal, Serializable {
 	@Resource
 	private SessionContext ctx;
 	
-
 	public boolean createUser(User u) throws EmailAlreadyInUseException {
 		User exU = em.find(u.getClass(), u.getEmail());
 		if(exU != null) {
@@ -30,7 +29,7 @@ public class UserEJB implements UserEJBLocal, Serializable {
 		
 		em.persist(u);
 		em.flush();
-		em.merge(u);
+		//em.merge(u);
 		
 		return true;
 	}
@@ -38,7 +37,9 @@ public class UserEJB implements UserEJBLocal, Serializable {
 	public User getUserByEmail(String email) {
 		if(email != null) {
 		    try {
-				return em.find(User.class, email);
+				em.flush();
+				User u = em.find(User.class, email);
+				return u;
 		    }
 		    catch(Exception e) {
 		        e.printStackTrace();

@@ -20,8 +20,4 @@ public class ConvertCharArray implements Converter {
 		throws ConverterException {
 			return new String((char [])value);
 	}
-
-	public ConvertCharArray() {
-		
-	}
 }

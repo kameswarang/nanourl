@@ -92,7 +92,7 @@ public class User implements Serializable {
 			return;
 		}
 		
-		String algorithm = "PBKDF2WithHmacSHA1";
+		String algorithm = System.getenv("PASS_ALGO");
 		SecretKeyFactory skFactory = null;
 
 		try {

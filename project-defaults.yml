@@ -1,0 +1,6 @@
+thorntail:
+    datasources:
+        data-sources:
+            nanourlDS:
+                driver-name: mysql
+                connection-url: 

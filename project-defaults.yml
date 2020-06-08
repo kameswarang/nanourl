@@ -3,4 +3,4 @@ thorntail:
         data-sources:
             nanourlDS:
                 driver-name: mysql
-                connection-url: jdbc:
+                #connection-url: add url here inn dev environment
